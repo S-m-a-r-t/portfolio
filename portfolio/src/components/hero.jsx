@@ -1,13 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Download } from 'lucide-react';
-import Scene from './Scene';
 
 const Hero = () => {
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-20">
-      <Scene/>
       <div className="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, x: -50 }}

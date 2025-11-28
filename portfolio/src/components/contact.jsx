@@ -74,7 +74,7 @@ const Contact = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-20 blur-3xl rounded-full"></div>
             <div className="glass p-10 rounded-3xl border border-white/10 relative z-10 text-center">
               <h3 className="text-2xl font-heading font-bold text-white mb-6">
-                "I aim to build technology that makes life easier—not just smarter."
+                "I am driven and curious builder who constantly pushes forward, even when doubt or pressure tries to slow me down."
               </h3>
               <div className="w-16 h-1 bg-primary mx-auto rounded-full mb-4"></div>
               <p className="text-gray-400 font-mono text-sm">Akshat Saini</p>
