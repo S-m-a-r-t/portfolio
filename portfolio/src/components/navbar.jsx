@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Code2 } from 'lucide-react';
-import { NAV_ITEMS } from '../constants';
+import { NAV_ITEMS } from '../constants.jsx';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {

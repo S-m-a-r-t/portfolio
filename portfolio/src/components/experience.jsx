@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { EXPERIENCE } from '../constants';
+import { EXPERIENCE } from '../constants.jsx';
 import { Calendar } from 'lucide-react';
 
 const Experience = () => {

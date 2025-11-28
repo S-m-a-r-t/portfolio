@@ -1,11 +1,11 @@
 import React from 'react';
-import Navbar from './components/navbar';
-import About from  './components/about';
-import Projects from './components/Projects';
-import Contact from './components/contact';
-import Experience from './components/experience';
-import Hero from './components/hero';
-import Skills from './components/skills';
+import Navbar from './components/navbar.jsx';
+import About from  './components/About.jsx';
+import Projects from './components/projects.jsx';
+import Contact from './components/contact.jsx';
+import Experience from './components/experience.jsx';
+import Hero from './components/hero.jsx';
+import Skills from './components/skills.jsx';
 
 function App() {
   return (

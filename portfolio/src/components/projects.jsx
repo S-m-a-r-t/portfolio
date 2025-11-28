@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { PROJECTS } from '../constants';
+import { PROJECTS } from '../constants.jsx';
 import { ExternalLink, Github } from 'lucide-react';
 
 const Projects = () => {
