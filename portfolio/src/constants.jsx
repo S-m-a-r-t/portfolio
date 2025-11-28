@@ -34,7 +34,7 @@ export const PROJECTS = [
     description: "GeoSence is a geopolitics-focused analytical platform designed to process, store, and interpret large-scale global event data using modern data engineering and AI methodologies. The system uses the GDELT 1.0 dataset, which contains millions of geopolitical events, and converts it into an optimized analytical workflow",
     tech: ["Python", "DuckDB", "Parquet", "Streamlit-based UI" , "Docker", "google gemini api", "clickhouse cloud service" ,"Retrieval-Augmented Generation"],
     features: ["Automated database extracting & merging", "Large-file processing (240GB)", "User Query → Vector Search → Relevant Events → LLM → Final Geopolitical Analysis" , "local_machine supported"],
-    github: "https://github.com/S-m-a-r-t/hungerx",
+    github: "https://github.com/S-m-a-r-t/Geosence",
     icon: BarChart3
   },
   {

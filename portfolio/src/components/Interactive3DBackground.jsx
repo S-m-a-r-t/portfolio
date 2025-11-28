@@ -7,12 +7,16 @@ export default function Interactive3DBackground() {
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
   const particlesRef = useRef(null);
+  const linesRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
-  const mouse3DRef = useRef(new THREE.Vector3());
+  const mouse3DRef = useRef(new THREE.Vector3(0, 0, 0));
   const originalPositionsRef = useRef(null);
+  const animationFrameRef = useRef(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
+
+    console.log('3D Background initializing...');
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -31,12 +35,22 @@ export default function Interactive3DBackground() {
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({ 
       antialias: true, 
-      alpha: true 
+      alpha: true,
+      powerPreference: "high-performance"
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+    
+    // Ensure canvas has proper styling
+    renderer.domElement.style.display = 'block';
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
+    
+    console.log('Canvas element added:', renderer.domElement);
 
     // Create geometric structure with particles
     const geometry = new THREE.BufferGeometry();
@@ -79,11 +93,12 @@ export default function Interactive3DBackground() {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.3,
+      size: 0.4,
       vertexColors: true,
       transparent: true,
       opacity: 0.8,
       blending: THREE.AdditiveBlending,
+      sizeAttenuation: true
     });
 
     const particles = new THREE.Points(geometry, material);
@@ -95,10 +110,12 @@ export default function Interactive3DBackground() {
     const linePositions = [];
     for (let i = 0; i < particleCount - 1; i += 20) {
       const i3 = i * 3;
-      linePositions.push(
-        positions[i3], positions[i3 + 1], positions[i3 + 2],
-        positions[i3 + 3], positions[i3 + 4], positions[i3 + 5]
-      );
+      if (i3 + 5 < positions.length) {
+        linePositions.push(
+          positions[i3], positions[i3 + 1], positions[i3 + 2],
+          positions[i3 + 3], positions[i3 + 4], positions[i3 + 5]
+        );
+      }
     }
     lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
     
@@ -111,18 +128,12 @@ export default function Interactive3DBackground() {
 
     const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
     scene.add(lines);
+    linesRef.current = lines;
 
-    // Raycaster for mouse interaction
-    const raycaster = new THREE.Raycaster();
-    raycaster.params.Points.threshold = 2;
-
-    // Mouse move handler
+    // Mouse move handler - attached to document to ensure it always fires
     const handleMouseMove = (event) => {
       mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-      // Update raycaster
-      raycaster.setFromCamera(mouseRef.current, camera);
 
       // Get mouse position in 3D space
       const vector = new THREE.Vector3(mouseRef.current.x, mouseRef.current.y, 0.5);
@@ -133,8 +144,10 @@ export default function Interactive3DBackground() {
     };
 
     // Animation loop
+    let frameCount = 0;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
+      frameCount++;
 
       if (particlesRef.current && originalPositionsRef.current) {
         const positions = particlesRef.current.geometry.attributes.position.array;
@@ -144,14 +157,15 @@ export default function Interactive3DBackground() {
         for (let i = 0; i < particleCount; i++) {
           const i3 = i * 3;
           
-          // Get original and current positions
+          // Get original positions
           const originalX = originalPositions[i3];
           const originalY = originalPositions[i3 + 1];
           const originalZ = originalPositions[i3 + 2];
 
-          // Transform original position to world space
+          // Transform to world space considering current rotation
           const worldPos = new THREE.Vector3(originalX, originalY, originalZ);
-          worldPos.applyMatrix4(particlesRef.current.matrixWorld);
+          worldPos.applyQuaternion(particlesRef.current.quaternion);
+          worldPos.add(particlesRef.current.position);
 
           // Calculate distance from mouse
           const dx = worldPos.x - mouse3DRef.current.x;
@@ -162,14 +176,14 @@ export default function Interactive3DBackground() {
           const effectRadius = 8;
           
           if (distance < effectRadius) {
-            // Calculate dispersion strength (stronger when closer)
+            // Calculate dispersion strength
             const strength = (1 - distance / effectRadius) * 5;
             
             // Push particles away from mouse
             const angle = Math.atan2(dy, dx);
             const disperseX = Math.cos(angle) * strength;
             const disperseY = Math.sin(angle) * strength;
-            const disperseZ = (Math.random() - 0.5) * strength;
+            const disperseZ = (Math.random() - 0.5) * strength * 0.5;
 
             positions[i3] = originalX + disperseX;
             positions[i3 + 1] = originalY + disperseY;
@@ -194,33 +208,50 @@ export default function Interactive3DBackground() {
         particlesRef.current.scale.setScalar(scale);
       }
 
-      if (lines) {
-        lines.rotation.y = particlesRef.current.rotation.y;
-        lines.rotation.z = particlesRef.current.rotation.z;
-        lines.scale.copy(particlesRef.current.scale);
+      if (linesRef.current && particlesRef.current) {
+        linesRef.current.rotation.copy(particlesRef.current.rotation);
+        linesRef.current.scale.copy(particlesRef.current.scale);
       }
 
       renderer.render(scene, camera);
+
+      // Debug log every 60 frames
+      if (frameCount % 60 === 0) {
+        console.log('Animation running, rotation:', particlesRef.current?.rotation.y);
+      }
     };
 
     // Handle window resize
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      
+      camera.aspect = width / height;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(width, height);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    // Attach to document instead of window for better event capture
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('resize', handleResize);
+    
+    console.log('Starting animation...');
     animate();
 
     // Cleanup
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      console.log('Cleaning up 3D background...');
+      document.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
-      if (containerRef.current && renderer.domElement) {
+      
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      
+      if (containerRef.current && renderer.domElement && containerRef.current.contains(renderer.domElement)) {
         containerRef.current.removeChild(renderer.domElement);
       }
+      
       geometry.dispose();
       material.dispose();
       lineGeometry.dispose();
@@ -230,8 +261,12 @@ export default function Interactive3DBackground() {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-gray-950 via-slate-950 to-black -z-9">
-      <div ref={containerRef} className="w-full h-full" />
+    <div className="fixed inset-0 -z-10 bg-gradient-to-br from-gray-950 via-slate-950 to-black">
+      <div 
+        ref={containerRef} 
+        className="w-full h-full pointer-events-none"
+        style={{ position: 'relative', overflow: 'hidden' }}
+      />
     </div>
   );
 }

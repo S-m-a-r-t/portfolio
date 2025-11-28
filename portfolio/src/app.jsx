@@ -7,13 +7,11 @@ import Experience from './components/experience';
 import Hero from './components/hero';
 import Skills from './components/skills';
 
-
-
 function App() {
   return (
-    <div className="bg-[#030014] min-h-screen text-slate-200 selection:bg-primary selection:text-black">
+    <div className="min-h-screen text-slate-200 selection:bg-primary selection:text-black relative">
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <About />
         <Skills />
