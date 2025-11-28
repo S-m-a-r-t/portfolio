@@ -32,7 +32,7 @@ const Hero = () => {
 
           <p className="text-lg md:text-xl text-gray-400 mb-8 max-w-lg leading-relaxed">
             BTech CSE student passionate about full-stack development, AI/ML, and building real-world
-            products. I’ve led GDG management, contributed to cloud tech communities, and built
+            products. I’ve led GDG, BC3 management, contributed to cloud tech communities, and built
             projects like HungerX and a hand sign language AI. I love creating impactful solutions
             and growing through developer communities.
           </p>
