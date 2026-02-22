@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PROJECTS } from '../constants.jsx';
-import { ExternalLink, Github } from 'lucide-react';
+import { Github } from 'lucide-react';
 
 const Projects = () => {
   return (
@@ -28,7 +28,7 @@ const Projects = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }} 
+              transition={{ delay: index * 0.1 }}
               whileHover={{ y: -10, boxShadow: "0 20px 50px -12px rgba(0, 242, 255, 0.1)" }}
               className="glass rounded-2xl p-8 border border-white/10 flex flex-col group"
             >

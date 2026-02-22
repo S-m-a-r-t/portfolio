@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
-export default function LiquidWaveLoader({ onComplete = () => {} }) {
+export default function LiquidWaveLoader({ onComplete = () => { } }) {
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
@@ -22,32 +22,39 @@ export default function LiquidWaveLoader({ onComplete = () => {} }) {
 
   if (!isVisible) return null;
 
-  // Create floating orbs
-  const orbs = Array.from({ length: 8 }, (_, i) => i);
+  // Create floating orbs — stabilized with useMemo to prevent re-randomizing on re-renders
+  const orbs = useMemo(() => Array.from({ length: 8 }, (_, i) => ({
+    id: i,
+    width: Math.random() * 400 + 200,
+    height: Math.random() * 400 + 200,
+    left: Math.random() * 100,
+    top: Math.random() * 100,
+    duration: Math.random() * 10 + 15,
+    delay: Math.random() * 5,
+  })), []);
 
   return (
     <div
-      className={`fixed inset-0 bg-gradient-to-br from-gray-950 via-slate-950 to-black overflow-hidden transition-opacity duration-700 ${
-        isFadingOut ? 'opacity-0' : 'opacity-100'
-      }`}
+      className={`fixed inset-0 bg-gradient-to-br from-gray-950 via-slate-950 to-black overflow-hidden transition-opacity duration-700 ${isFadingOut ? 'opacity-0' : 'opacity-100'
+        }`}
     >
       {/* Animated gradient orbs in background */}
-      {orbs.map((i) => (
+      {orbs.map((orb) => (
         <div
-          key={i}
+          key={orb.id}
           className="absolute rounded-full blur-3xl"
           style={{
-            width: `${Math.random() * 400 + 200}px`,
-            height: `${Math.random() * 400 + 200}px`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            background: i % 3 === 0 
-              ? 'rgba(139, 92, 246, 0.15)' 
-              : i % 3 === 1
-              ? 'rgba(96, 165, 250, 0.15)'
-              : 'rgba(167, 139, 250, 0.15)',
-            animation: `float ${Math.random() * 10 + 15}s ease-in-out infinite`,
-            animationDelay: `${Math.random() * 5}s`,
+            width: `${orb.width}px`,
+            height: `${orb.height}px`,
+            left: `${orb.left}%`,
+            top: `${orb.top}%`,
+            background: orb.id % 3 === 0
+              ? 'rgba(139, 92, 246, 0.15)'
+              : orb.id % 3 === 1
+                ? 'rgba(96, 165, 250, 0.15)'
+                : 'rgba(167, 139, 250, 0.15)',
+            animation: `float ${orb.duration}s ease-in-out infinite`,
+            animationDelay: `${orb.delay}s`,
           }}
         />
       ))}
@@ -68,7 +75,7 @@ export default function LiquidWaveLoader({ onComplete = () => {} }) {
               }}
             />
           ))}
-          
+
           {/* Center glowing orb */}
           <div className="relative">
             <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full shadow-2xl"
@@ -109,7 +116,7 @@ export default function LiquidWaveLoader({ onComplete = () => {} }) {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% {
             transform: translate(0, 0) scale(1);

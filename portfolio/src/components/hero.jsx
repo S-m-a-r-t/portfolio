@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Download } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 
 const Hero = () => {
 
@@ -90,7 +90,7 @@ const Hero = () => {
       </div>
 
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-gray-500">
-        <Download className="w-6 h-6 rotate-90 opacity-50" />
+        <ChevronDown className="w-6 h-6 opacity-50" />
       </div>
     </section>
   );

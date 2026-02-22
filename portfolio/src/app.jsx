@@ -1,11 +1,12 @@
 import React from 'react';
 import Navbar from './components/navbar.jsx';
-import About from  './components/About.jsx';
+import About from './components/About.jsx';
 import Projects from './components/projects.jsx';
 import Contact from './components/contact.jsx';
 import Experience from './components/experience.jsx';
 import Hero from './components/hero.jsx';
 import Skills from './components/skills.jsx';
+import Resume from './components/resume.jsx';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <main className="relative z-10">
         <Hero />
         <About />
+        <Resume />
         <Skills />
         <Projects />
         <Experience />
