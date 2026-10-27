@@ -1,60 +1,75 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { EXPERIENCE } from '../constants.jsx';
-import { Calendar } from 'lucide-react';
 
 const Experience = () => {
   return (
-    <section id="experience" className="py-20 bg-black/20">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16"
-        >
-          <h2 className="font-heading text-4xl md:text-5xl font-bold text-white mb-4">
-            My <span className="text-secondary">Journey</span>
-          </h2>
-        </motion.div>
+    <section id="experience" className="section-shell relative">
+      <div className="absolute inset-x-0 top-0 h-px divider-glow" />
+      <div className="absolute -left-40 top-1/3 h-[420px] w-[420px] rounded-full bg-secondary/12 blur-[190px]" />
 
-        <div className="relative border-l-2 border-white/10 ml-3 md:ml-6 space-y-12">
-          {EXPERIENCE.map((exp, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="relative pl-8 md:pl-12"
-            >
-              {/* Timeline Dot */}
-              <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-black border-2 border-primary shadow-[0_0_10px_rgba(0,242,255,0.5)]"></div>
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-1.5 text-xs uppercase tracking-[0.6em] text-slate-500">
+              Journey
+            </div>
+            <h2 className="font-heading text-[clamp(2.8rem,8vw,6.5rem)] font-semibold leading-[0.92] tracking-[-0.07em] text-white">
+              Experience &
+              <br />
+              <span className="text-gradient">leadership</span>
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg text-slate-300">
+              Building communities while shipping technical work — focused on scale, structure, and people.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 text-sm text-slate-500">
+            <div className="h-px w-12 bg-gradient-to-r from-primary/70 to-transparent" />
+            <span className="uppercase tracking-[0.5em]">Intentional growth</span>
+          </div>
+        </div>
 
-              <div className="glass p-6 md:p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
-                  <div>
-                    <h3 className="text-2xl font-bold text-white">{exp.role}</h3>
-                    <p className="text-primary font-medium text-lg">{exp.organization}</p>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-gray-400 bg-white/5 px-3 py-1 rounded-full w-fit">
-                    <Calendar size={16} />
-                    <span className="text-sm font-mono">{exp.period}</span>
+        <div className="relative">
+          <div className="absolute left-4 top-0 hidden h-full w-px bg-gradient-to-b from-primary/40 via-white/10 to-transparent md:left-1/2 md:block" />
+          <div className="grid gap-8">
+            {EXPERIENCE.map((exp, index) => (
+              <motion.article
+                key={index}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 0.9, ease: [0.25, 0.8, 0.25, 1], delay: index * 0.08 }}
+                className={`relative grid gap-6 md:grid-cols-[1fr_auto_1fr] md:items-start ${index % 2 === 1 ? 'md:[&>div:first-child]:order-3' : ''}`}
+              >
+                <div className="hidden md:block" />
+                <div className="relative hidden items-center justify-center md:flex">
+                  <div className="absolute h-3 w-3 rounded-full bg-primary shadow-[0_0_0_12px_rgba(34,211,238,0.08)]" />
+                </div>
+                <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-gradient-to-br from-white/[0.015] to-white/[0.01]">
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  <div className="flex flex-col gap-6 p-7 sm:p-9">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <p className="font-mono text-xs uppercase tracking-[0.5em] text-slate-500">{exp.period}</p>
+                        <h3 className="mt-3 font-heading text-2xl font-semibold tracking-[-0.04em] text-white sm:text-3xl">
+                          {exp.role}
+                        </h3>
+                        <p className="mt-2 text-lg text-primary">{exp.organization}</p>
+                      </div>
+                    </div>
+                    <ul className="grid gap-3">
+                      {exp.details.map((detail, i) => (
+                        <li key={i} className="flex items-start gap-3 text-base text-slate-300">
+                          <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/70" />
+                          <span>{detail}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-
-                <ul className="space-y-3 mt-4">
-                  {exp.details.map((detail, i) => (
-                    <li key={i} className="flex items-start gap-3 text-gray-400">
-                      <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2.5 shrink-0"></span>
-                      <span className="leading-relaxed">{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          ))}
+              </motion.article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

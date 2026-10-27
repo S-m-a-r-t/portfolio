@@ -1,24 +1,24 @@
 import React from 'react';
 import Navbar from './components/navbar.jsx';
-import About from './components/About.jsx';
-import Projects from './components/projects.jsx';
-import Contact from './components/contact.jsx';
-import Experience from './components/experience.jsx';
 import Hero from './components/hero.jsx';
+import About from './components/About.jsx';
 import Skills from './components/skills.jsx';
+import Projects from './components/projects.jsx';
+import Experience from './components/experience.jsx';
 import Resume from './components/resume.jsx';
+import Contact from './components/contact.jsx';
 
 function App() {
   return (
-    <div className="min-h-screen text-slate-200 selection:bg-primary selection:text-black relative">
+    <div className="min-h-screen text-slate-200 relative bg-[#050510]">
       <Navbar />
-      <main className="relative z-10">
+      <main className="relative">
         <Hero />
         <About />
-        <Resume />
         <Skills />
         <Projects />
         <Experience />
+        <Resume />
         <Contact />
       </main>
     </div>

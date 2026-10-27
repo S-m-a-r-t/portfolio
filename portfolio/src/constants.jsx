@@ -1,11 +1,11 @@
 import { Globe, MessageSquare, BarChart3, Map, Heart } from 'lucide-react';
 
 export const NAV_ITEMS = [
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Resume', href: '#resume' },
+  { label: 'About', href: '#about', keywords: ['about', 'profile', 'intro'] },
+  { label: 'Skills', href: '#skills', keywords: ['skills', 'stack', 'tools', 'tech'] },
+  { label: 'Projects', href: '#projects', keywords: ['projects', 'work', 'portfolio', 'case studies'] },
+  { label: 'Experience', href: '#experience', keywords: ['experience', 'journey', 'timeline', 'roles'] },
+  { label: 'Resume', href: '#resume', keywords: ['resume', 'cv', 'pdf'] },
 ];
 
 export const SKILLS = [

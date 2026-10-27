@@ -5,5 +5,9 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: "dist"
+  },
+  server: {
+    host: true,
+    allowedHosts: ['.ngrok-free.dev', '.ngrok-free.app', '.ngrok.app']
   }
 })
